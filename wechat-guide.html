@@ -124,6 +124,7 @@
             align-items: center;
             justify-content: center;
             font-size: 3rem;
+            color: #667eea;
         }
         
         .app-link {
@@ -217,12 +218,12 @@
             <div class="qr-section">
                 <h2>扫码立即使用</h2>
                 <p>使用微信扫一扫，然后按照下方步骤安装</p>
-                <div class="qr-code">
-                    <!-- 这里放置二维码 -->
-                    📱
+                <div class="qr-code" id="qr-code-placeholder">
+                    <!-- 这里会自动显示二维码 -->
+                    二维码加载中...
                 </div>
                 <p>或直接访问：</p>
-                <a href="index.html" class="app-link">立即打开恋爱聊天助手</a>
+                <a href="index.html" class="app-link" id="app-link">立即打开恋爱聊天助手</a>
             </div>
             
             <h2 style="margin: 40px 0 20px; color: #333;">安装步骤</h2>
@@ -232,8 +233,8 @@
                 <div class="step-content">
                     <h3 class="step-title">微信扫码</h3>
                     <p class="step-description">使用微信"扫一扫"功能扫描上方二维码</p>
-                    <div class="screenshot" style="background: #e0e0e0; height: 200px; display: flex; align-items: center; justify-content: center;">
-                        微信扫一扫界面示意图
+                    <div class="screenshot" style="background: #e0e0e0; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        📱 微信扫一扫
                     </div>
                 </div>
             </div>
@@ -243,8 +244,8 @@
                 <div class="step-content">
                     <h3 class="step-title">点击右上角菜单</h3>
                     <p class="step-description">在微信中打开页面后，点击右上角的"..."按钮</p>
-                    <div class="screenshot" style="background: #e0e0e0; height: 200px; display: flex; align-items: center; justify-content: center;">
-                        微信右上角菜单示意图
+                    <div class="screenshot" style="background: #e0e0e0; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        ⋯ 微信菜单
                     </div>
                 </div>
             </div>
@@ -254,8 +255,8 @@
                 <div class="step-content">
                     <h3 class="step-title">选择"在浏览器中打开"</h3>
                     <p class="step-description">在菜单中选择"在浏览器中打开"，建议使用Chrome或Safari</p>
-                    <div class="screenshot" style="background: #e0e0e0; height: 200px; display: flex; align-items: center; justify-content: center;">
-                        浏览器打开选项示意图
+                    <div class="screenshot" style="background: #e0e0e0; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        🌐 浏览器打开
                     </div>
                 </div>
             </div>
@@ -266,9 +267,9 @@
                     <h3 class="step-title">添加到桌面</h3>
                     <p class="step-description">在浏览器中找到"添加到主屏幕"或"安装"按钮</p>
                     <ul style="color: #666; margin-left: 20px; margin-top: 10px;">
-                        <li>iOS Safari：点击底部分享按钮 → 添加到主屏幕</li>
-                        <li>Android Chrome：点击右上角菜单 → 添加到主屏幕</li>
-                        <li>其他浏览器：查找类似"安装应用"选项</li>
+                        <li>📱 iOS Safari：点击底部分享按钮 → 添加到主屏幕</li>
+                        <li>🤖 Android Chrome：点击右上角菜单 → 添加到主屏幕</li>
+                        <li>💻 其他浏览器：查找类似"安装应用"选项</li>
                     </ul>
                 </div>
             </div>
@@ -304,23 +305,42 @@
         
         <footer>
             <p>© 2024 恋爱聊天助手 | 专业恋爱沟通指导工具</p>
-            <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.7;">如遇安装问题，请尝试使用其他浏览器或联系我们</p>
+            <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.7;">如遇安装问题，请尝试使用其他浏览器</p>
         </footer>
     </div>
     
     <script>
-        // 如果直接在微信中打开，显示安装指引
-        function isWeChat() {
-            return /MicroMessenger/i.test(navigator.userAgent);
+        // 自动设置当前网址
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUrl = window.location.origin + window.location.pathname.replace('wechat-guide.html', '');
+            const appLink = document.getElementById('app-link');
+            
+            // 更新链接
+            appLink.href = currentUrl + 'index.html';
+            appLink.textContent = '立即打开恋爱聊天助手 (' + currentUrl + ')';
+            
+            // 生成二维码占位符
+            const qrPlaceholder = document.getElementById('qr-code-placeholder');
+            qrPlaceholder.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 10px;">📱</div>
+                    <div style="font-size: 14px; color: #666;">扫描二维码访问</div>
+                    <div style="font-size: 12px; color: #999; margin-top: 5px;">${currentUrl}</div>
+                </div>
+            `;
+            
+            console.log('当前网站地址:', currentUrl);
+        });
+        
+        // 微信检测 - 简化版
+        function isWeChatBrowser() {
+            const ua = navigator.userAgent.toLowerCase();
+            return ua.indexOf('micromessenger') !== -1;
         }
         
-        if (isWeChat() && window.location.pathname.includes('index.html')) {
-            // 5秒后提示用户安装
-            setTimeout(() => {
-                if (confirm('检测到您在微信中浏览，建议在浏览器中打开并添加到桌面以获得最佳体验。\n\n是否查看安装指南？')) {
-                    window.location.href = 'wechat-guide.html';
-                }
-            }, 3000);
+        // 如果是微信访问引导页，显示提示
+        if (isWeChatBrowser() && window.location.pathname.endsWith('wechat-guide.html')) {
+            console.log('检测到微信浏览器访问引导页');
         }
     </script>
 </body>
