@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恋爱聊天助手</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="icon-192.png">
+    <!-- iOS Safari PWA支持 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+    <!-- 开场动画容器 -->
+    <div id="opening-animation" class="opening-container">
+        <div class="couple-animation">
+            <div class="figure male"></div>
+            <div class="heart"></div>
+            <div class="figure female"></div>
+        </div>
+        <div class="app-title">
+            <h1>恋爱聊天助手</h1>
+            <p>智能对话 · 情感指导</p>
+        </div>
+    </div>
+
+    <!-- 主界面（初始隐藏） -->
+    <div id="main-app" class="main-container hidden">
+        <header class="app-header">
+            <h1>💕 恋爱聊天助手</h1>
+            <p class="subtitle">选择当前关系阶段，获取专业回复建议</p>
+        </header>
+
+        <main class="stages-container">
+            <!-- 8个阶段按钮 -->
+            <div class="stages-list">
+                <div class="stage-card" data-stage="icebreaking" onclick="selectStage('icebreaking')">
+                    <div class="stage-icon">❄️</div>
+                    <div class="stage-content">
+                        <h3>破冰初识</h3>
+                        <p>初次相识，建立联系</p>
+                    </div>
+                    <div class="stage-arrow">→</div>
+                </div>
+
+                <div class="stage-card" data-stage="friendship" onclick="selectStage('friendship')">
+                    <div class="stage-icon">👥</div>
+                    <div class="stage-content">
+                        <h3>普通朋友</h3>
+                        <p>保持联系，增进了解</p>
+                    </div>
+                    <div class="stage-arrow">→</div>
+                </div>
+
+                <div class="stage-card" data-stage="attraction" onclick="selectStage('attraction')">
+                    <div class="stage-icon">💘</div>
+                    <div class="stage-content">
+                        <h3>吸引阶段</h3>
+                        <p>创造吸引，展示价值</p>
+                    </div>
+                    <div class="stage-arrow">→</div>
+                </div>
+
+                <div class="stage-card" data-stage="ambiguous" onclick="selectStage('ambiguous')">
+                    <div class="stage-icon">😊</div>
+                    <div class="stage-content">
+                        <h3>暧昧期</h3>
+                        <p>微妙关系，升温感情</p>
+                    </div>
+                    <div class="stage-arrow">→</div>
+                </div>
+
+                <div class="stage-card" data-stage="dating" onclick="selectStage('dating')">
+                    <div class="stage-icon">🎯</div>
+                    <div class="stage-content">
+                        <h3>约会阶段</h3>
+                        <p>正式约会，推进关系</p>
+                    </div>
+                    <div class="stage-arrow">→</div>
+                </div>
+
+                <div class="stage-card" data-stage="intimacy" onclick="selectStage('intimacy')">
+                    <div class="stage-icon">💑</div>
+                    <div class="stage-content">
+                        <h3>稳定亲密</h3>
+                        <p>确立关系，深度连接</p>
+                    </div>
+                    <div class="stage-arrow">→</div>
+                </div>
+
+                <div class="stage-card" data-stage="recovery" onclick="selectStage('recovery')">
+                    <div class="stage-icon">🔄</div>
+                    <div class="stage-content">
+                        <h3>挽回期</h3>
+                        <p>修复关系，重建信任</p>
+                    </div>
+                    <div class="stage-arrow">→</div>
+                </div>
+            </div>
+
+            <!-- 聊天界面（初始隐藏） -->
+            <div id="chat-interface" class="chat-container hidden">
+                <div class="chat-header">
+                    <button onclick="goBackToStages()" class="back-btn">← 返回</button>
+                    <h2 id="current-stage-title">破冰初识</h2>
+                </div>
+
+                <div class="search-section">
+                    <input type="text" id="message-input" 
+                           placeholder="输入女生的话，搜索最佳回复..."
+                           onkeypress="handleKeyPress(event)">
+                    <button onclick="searchResponse()" class="search-btn">搜索</button>
+                </div>
+
+                <div id="results-container" class="results-container">
+                    <!-- 搜索结果将动态显示在这里 -->
+                </div>
+
+                <div class="quick-examples">
+                    <p>试试输入：</p>
+                    <div class="example-chips">
+                        <span onclick="fillExample('你好')">你好</span>
+                        <span onclick="fillExample('在干嘛')">在干嘛</span>
+                        <span onclick="fillExample('吃饭了吗')">吃饭了吗</span>
+                        <span onclick="fillExample('周末有空吗')">周末有空吗</span>
+                        <span onclick="fillExample('晚安')">晚安</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>💡 提示：点击阶段进入，输入对话内容获取建议</p>
+        </footer>
+    </div>
+
+    <!-- 复制成功提示 -->
+    <div id="copy-toast" class="copy-toast">✓ 已复制到剪贴板</div>
+
+    <script src="app.js"></script>
+    <!-- PWA Service Worker注册 -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker 注册成功:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker 注册失败:', error);
+                    });
+            });
+        }
+
+        // 安装提示
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // 5秒后显示安装提示
+            setTimeout(() => {
+                showInstallPrompt();
+            }, 5000);
+        });
+
+        function showInstallPrompt() {
+            if (deferredPrompt && !localStorage.getItem('installDismissed')) {
+                const installBtn = document.createElement('button');
+                installBtn.className = 'install-btn';
+                installBtn.innerHTML = '📱 添加到桌面';
+                installBtn.onclick = () => {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then(() => {
+                        installBtn.remove();
+                        localStorage.setItem('installDismissed', 'true');
+                    });
+                };
+                
+                installBtn.onmouseenter = () => {
+                    setTimeout(() => installBtn.remove(), 3000);
+                };
+                
+                document.body.appendChild(installBtn);
+            }
+        }
+    </script>
+</body>
+</html>
