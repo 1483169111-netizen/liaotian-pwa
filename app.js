@@ -1,81 +1,59 @@
 // ==================== 开场动画控制 ====================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM 加载完成，开始开场动画');
-    
-    // 确保主应用界面初始隐藏
-    const mainApp = document.getElementById('main-app');
-    if (mainApp) {
-        mainApp.style.display = 'none';
-    }
+    console.log('DOM 加载完成');
     
     // 4秒后显示主界面
     setTimeout(() => {
-        console.log('开场动画结束，显示主界面');
+        console.log('开场动画结束');
         
         const opening = document.getElementById('opening-animation');
         const mainApp = document.getElementById('main-app');
         
-        if (!opening || !mainApp) {
-            console.error('找不到必要的DOM元素');
-            return;
+        if (opening && mainApp) {
+            // 淡出开场动画
+            opening.style.opacity = '0';
+            opening.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(() => {
+                opening.style.display = 'none';
+                mainApp.style.display = 'block';
+                
+                // 初始化 PWA
+                initPWA();
+            }, 500);
         }
-        
-        // 淡出开场动画
-        opening.style.opacity = '0';
-        opening.style.transition = 'opacity 0.5s ease-out';
-        
-        // 500ms后隐藏开场动画，显示主应用
-        setTimeout(() => {
-            opening.style.display = 'none';
-            mainApp.style.display = 'block';
-            
-            // 初始化 PWA 功能
-            initPWA();
-            
-            console.log('主界面显示完成');
-        }, 500);
     }, 4000);
-    
-    // 初始化示例按钮
-    initExampleButtons();
 });
 
 // ==================== PWA 功能 ====================
 function initPWA() {
-    console.log('初始化 PWA 功能');
+    console.log('初始化 PWA');
     
     let deferredPrompt;
     const installButton = document.getElementById('pwa-install-button');
     
-    if (!installButton) {
-        console.log('未找到 PWA 安装按钮');
-        return;
-    }
+    if (!installButton) return;
     
-    // 监听安装提示事件
     window.addEventListener('beforeinstallprompt', (e) => {
-        console.log('beforeinstallprompt 事件触发');
+        console.log('PWA 安装提示可用');
         
         // 阻止默认安装提示
         e.preventDefault();
         
-        // 保存事件以便后续使用
+        // 保存事件
         deferredPrompt = e;
         
         // 显示安装按钮
         installButton.style.display = 'inline-block';
         
-        // 点击安装
         installButton.onclick = () => {
             if (deferredPrompt) {
-                // 显示安装提示
                 deferredPrompt.prompt();
                 
-                // 等待用户选择
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('用户接受了安装');
-                        showPWAToast('应用安装成功！🎉');
+                        showToast('应用安装成功！🎉');
                         installButton.style.display = 'none';
                     } else {
                         console.log('用户拒绝了安装');
@@ -86,33 +64,15 @@ function initPWA() {
         };
     });
     
-    // 监听应用安装成功
-    window.addEventListener('appinstalled', () => {
-        console.log('应用已安装成功');
-        installButton.style.display = 'none';
-        showPWAToast('应用安装成功！✨');
-    });
-    
     // 检查是否已安装
     if (window.matchMedia('(display-mode: standalone)').matches) {
-        console.log('应用已安装，运行在独立模式');
+        console.log('应用已安装');
         installButton.style.display = 'none';
     }
 }
 
-// ==================== 基础聊天功能 ====================
+// ==================== 聊天基础功能 ====================
 let currentStage = '';
-
-// 阶段标题映射
-const stageTitles = {
-    icebreaking: "破冰初识",
-    friendship: "普通朋友",
-    attraction: "吸引阶段",
-    ambiguous: "暧昧期",
-    dating: "约会阶段",
-    intimacy: "稳定亲密",
-    recovery: "挽回期"
-};
 
 // 选择阶段
 function selectStage(stage) {
@@ -122,17 +82,14 @@ function selectStage(stage) {
     // 更新界面
     const stageTitle = document.getElementById('current-stage-title');
     if (stageTitle) {
-        stageTitle.textContent = stageTitles[stage] || stage;
+        stageTitle.textContent = getStageTitle(stage);
     }
     
-    // 切换到聊天界面
-    const stagesList = document.querySelector('.stages-list');
-    const chatInterface = document.getElementById('chat-interface');
+    // 切换显示
+    document.querySelector('.stages-list').style.display = 'none';
+    document.getElementById('chat-interface').style.display = 'block';
     
-    if (stagesList) stagesList.style.display = 'none';
-    if (chatInterface) chatInterface.style.display = 'block';
-    
-    // 显示阶段描述
+    // 显示描述
     showStageDescription();
 }
 
@@ -140,19 +97,29 @@ function selectStage(stage) {
 function goBackToStages() {
     console.log('返回阶段选择');
     
-    const stagesList = document.querySelector('.stages-list');
-    const chatInterface = document.getElementById('chat-interface');
+    document.querySelector('.stages-list').style.display = 'block';
+    document.getElementById('chat-interface').style.display = 'none';
     
-    if (stagesList) stagesList.style.display = 'block';
-    if (chatInterface) chatInterface.style.display = 'none';
-    
-    // 清空结果
+    // 清空
     const resultsContainer = document.getElementById('results-container');
     if (resultsContainer) resultsContainer.innerHTML = '';
     
-    // 清空输入
     const messageInput = document.getElementById('message-input');
     if (messageInput) messageInput.value = '';
+}
+
+// 获取阶段标题
+function getStageTitle(stage) {
+    const titles = {
+        icebreaking: "破冰初识",
+        friendship: "普通朋友", 
+        attraction: "吸引阶段",
+        ambiguous: "暧昧期",
+        dating: "约会阶段",
+        intimacy: "稳定亲密",
+        recovery: "挽回期"
+    };
+    return titles[stage] || stage;
 }
 
 // 显示阶段描述
@@ -170,27 +137,15 @@ function showStageDescription() {
         recovery: "修复关系问题，重建信任和连接"
     };
     
-    const tips = {
-        icebreaking: ["保持自然真诚", "从共同点开场", "避免连续提问", "适时展示幽默"],
-        friendship: ["保持适当联系频率", "分享生活", "寻找共同兴趣", "建立信任"],
-        attraction: ["展示自身价值", "使用推拉技巧", "保持神秘感", "展现自信"],
-        ambiguous: ["增加亲密感", "使用暧昧语言", "观察反馈", "创造心动瞬间"],
-        dating: ["规划约会细节", "展现绅士风度", "创造愉快氛围", "适时推进关系"],
-        intimacy: ["深度沟通分享", "建立安全感", "共同规划未来", "保持新鲜感"],
-        recovery: ["冷静处理情绪", "真诚反思问题", "给彼此空间", "展现实际行动"]
-    };
-    
-    const currentTips = tips[currentStage] || [];
-    
     container.innerHTML = `
         <div class="stage-description">
-            <h3>${stageTitles[currentStage] || currentStage}</h3>
+            <h3>${getStageTitle(currentStage)}</h3>
             <p>${descriptions[currentStage] || ''}</p>
             <div class="description-tips">
-                <h4>💡 沟通要点：</h4>
-                <ul>
-                    ${currentTips.map(tip => `<li>${tip}</li>`).join('')}
-                </ul>
+                <h4>💡 使用说明：</h4>
+                <p>1. 输入对方的消息内容</p>
+                <p>2. 点击"获取回复"按钮</p>
+                <p>3. 选择合适的回复并复制使用</p>
             </div>
         </div>
     `;
@@ -212,29 +167,28 @@ function searchResponse() {
         return;
     }
     
-    console.log('搜索回复:', text, '阶段:', currentStage);
+    console.log('搜索:', text);
     
-    // 模拟搜索结果
-    const results = [
+    // 简单的回复示例
+    const responses = [
         {
             type: "友好回应",
             text: "刚忙完，正在休息呢 ☕ 你呢？今天过得怎么样？",
             tip: "分享状态+反问，延续对话"
         },
         {
-            type: "幽默回应",
-            text: "正在思考宇宙终极问题：晚上吃什么？🍽️ 你有推荐吗？",
+            type: "幽默回应", 
+            text: "正在思考人生大事：晚上吃什么？🍽️ 你有推荐吗？",
             tip: "用幽默化解普通问题"
         },
         {
-            type: "延伸话题",
-            text: "今天天气不错，有出去走走吗？🌤️",
-            tip: "自然引出新话题"
+            type: "关心回应",
+            text: "听起来你今天有点忙呢，记得照顾好自己哦 🌟",
+            tip: "展现关心和体贴"
         }
     ];
     
-    // 显示结果
-    displayResults(results);
+    displayResults(responses);
 }
 
 // 显示结果
@@ -244,17 +198,20 @@ function displayResults(results) {
     
     container.innerHTML = `
         <div class="results-count">
-            找到 ${results.length} 个建议回复：
+            为您找到 ${results.length} 个建议回复：
         </div>
     `;
     
-    results.forEach((response) => {
+    // 安全地添加结果 - 限制数量
+    const limitedResults = results.slice(0, 5); // 最多显示5个
+    
+    limitedResults.forEach((response, index) => {
         const card = document.createElement('div');
         card.className = 'response-card';
         card.innerHTML = `
             <div class="response-header">
                 <span class="response-type">${response.type}</span>
-                <button class="copy-btn" onclick="copyToClipboard(this)">
+                <button class="copy-btn" onclick="copyResponse(${index})">
                     📋 复制
                 </button>
             </div>
@@ -262,46 +219,31 @@ function displayResults(results) {
             <div class="response-tip">💡 ${response.tip}</div>
         `;
         
-        // 存储文本到按钮的 data 属性
-        const copyBtn = card.querySelector('.copy-btn');
-        copyBtn.dataset.text = response.text;
+        // 存储到全局变量
+        if (!window.responseData) window.responseData = [];
+        window.responseData[index] = response.text;
         
         container.appendChild(card);
     });
 }
 
-// 复制到剪贴板
-function copyToClipboard(button) {
-    const text = button.dataset.text;
+// 复制回复
+function copyResponse(index) {
+    const text = window.responseData && window.responseData[index];
     if (!text) return;
     
     navigator.clipboard.writeText(text).then(() => {
-        // 显示复制成功效果
-        const originalText = button.innerHTML;
-        button.innerHTML = '✓ 已复制';
-        button.style.background = '#4CAF50';
-        button.style.color = 'white';
-        
-        // 显示提示
         showToast('已复制到剪贴板');
-        
-        // 2秒后恢复
-        setTimeout(() => {
-            button.innerHTML = originalText;
-            button.style.background = '';
-            button.style.color = '';
-        }, 2000);
-    }).catch(err => {
-        console.error('复制失败:', err);
-        showToast('复制失败，请手动复制');
+    }).catch(() => {
+        // 备用方法
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast('已复制到剪贴板');
     });
-}
-
-// 处理键盘输入
-function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-        searchResponse();
-    }
 }
 
 // 填充示例
@@ -313,10 +255,11 @@ function fillExample(text) {
     }
 }
 
-// 初始化示例按钮
-function initExampleButtons() {
-    // 简单的示例按钮初始化
-    console.log('示例按钮初始化完成');
+// 处理键盘输入
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        searchResponse();
+    }
 }
 
 // 显示提示
@@ -326,38 +269,16 @@ function showToast(message) {
         toast.textContent = message;
         toast.style.display = 'block';
         
-        // 使用简单的动画
-        toast.style.opacity = '1';
-        
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 300);
-        }, 2000);
-    } else {
-        // 如果没有 toast，用 alert 代替
-        alert(message);
-    }
-}
-
-// 显示 PWA 安装成功提示
-function showPWAToast(message) {
-    const toast = document.getElementById('pwa-toast');
-    if (toast) {
-        toast.textContent = message;
-        toast.style.display = 'block';
-        
         setTimeout(() => {
             toast.style.display = 'none';
-        }, 3000);
+        }, 2000);
     }
 }
 
-// 确保全局函数可用
+// 导出全局函数
 window.selectStage = selectStage;
 window.goBackToStages = goBackToStages;
 window.searchResponse = searchResponse;
 window.handleKeyPress = handleKeyPress;
 window.fillExample = fillExample;
-window.copyToClipboard = copyToClipboard;
+window.copyResponse = copyResponse;
