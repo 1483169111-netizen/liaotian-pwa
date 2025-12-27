@@ -1,347 +1,57 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>安装指南 - 恋爱聊天助手</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-        
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        
-        .subtitle {
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-        
-        .main-content {
-            padding: 30px;
-        }
-        
-        .step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 40px;
-            padding: 20px;
-            border-radius: 15px;
-            background: #f8f9fa;
-            transition: transform 0.3s ease;
-        }
-        
-        .step:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .step-number {
-            background: #667eea;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-right: 20px;
-            flex-shrink: 0;
-        }
-        
-        .step-content {
-            flex: 1;
-        }
-        
-        .step-title {
-            font-size: 1.3rem;
-            color: #333;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        
-        .step-description {
-            color: #666;
-            margin-bottom: 15px;
-        }
-        
-        .screenshot {
-            width: 100%;
-            max-width: 300px;
-            border-radius: 10px;
-            border: 2px solid #e0e0e0;
-            margin-top: 10px;
-        }
-        
-        .qr-section {
-            text-align: center;
-            padding: 30px;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 15px;
-            margin: 30px 0;
-        }
-        
-        .qr-code {
-            width: 200px;
-            height: 200px;
-            margin: 20px auto;
-            border: 10px solid white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            background: #f8f9fa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: #667eea;
-        }
-        
-        .app-link {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .app-link:hover {
-            background: #764ba2;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-        }
-        
-        .feature {
-            text-align: center;
-            padding: 20px;
-            background: white;
-            border-radius: 15px;
-            border: 2px solid #f0f0f0;
-            transition: all 0.3s ease;
-        }
-        
-        .feature:hover {
-            border-color: #667eea;
-            transform: translateY(-5px);
-        }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-        
-        .feature-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .feature-desc {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            border-top: 1px solid #e0e0e0;
-            background: #f8f9fa;
-        }
-        
-        @media (max-width: 768px) {
-            .step {
-                flex-direction: column;
-            }
-            
-            .step-number {
-                margin-right: 0;
-                margin-bottom: 15px;
-            }
-            
-            .features {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微信使用指引</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .guide-container {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .guide-title {
+      text-align: center;
+      color: #4285f4;
+      margin-bottom: 20px;
+    }
+    .guide-step {
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+    .back-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      text-align: center;
+      background: #4285f4;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📱 恋爱聊天助手安装指南</h1>
-            <p class="subtitle">专业恋爱聊天指导 · 离线可用 · 添加到桌面</p>
-        </header>
-        
-        <div class="main-content">
-            <div class="qr-section">
-                <h2>扫码立即使用</h2>
-                <p>使用微信扫一扫，然后按照下方步骤安装</p>
-                <div class="qr-code" id="qr-code-placeholder">
-                    <!-- 这里会自动显示二维码 -->
-                    二维码加载中...
-                </div>
-                <p>或直接访问：</p>
-                <a href="index.html" class="app-link" id="app-link">立即打开恋爱聊天助手</a>
-            </div>
-            
-            <h2 style="margin: 40px 0 20px; color: #333;">安装步骤</h2>
-            
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3 class="step-title">微信扫码</h3>
-                    <p class="step-description">使用微信"扫一扫"功能扫描上方二维码</p>
-                    <div class="screenshot" style="background: #e0e0e0; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
-                        📱 微信扫一扫
-                    </div>
-                </div>
-            </div>
-            
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3 class="step-title">点击右上角菜单</h3>
-                    <p class="step-description">在微信中打开页面后，点击右上角的"..."按钮</p>
-                    <div class="screenshot" style="background: #e0e0e0; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
-                        ⋯ 微信菜单
-                    </div>
-                </div>
-            </div>
-            
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3 class="step-title">选择"在浏览器中打开"</h3>
-                    <p class="step-description">在菜单中选择"在浏览器中打开"，建议使用Chrome或Safari</p>
-                    <div class="screenshot" style="background: #e0e0e0; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
-                        🌐 浏览器打开
-                    </div>
-                </div>
-            </div>
-            
-            <div class="step">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <h3 class="step-title">添加到桌面</h3>
-                    <p class="step-description">在浏览器中找到"添加到主屏幕"或"安装"按钮</p>
-                    <ul style="color: #666; margin-left: 20px; margin-top: 10px;">
-                        <li>📱 iOS Safari：点击底部分享按钮 → 添加到主屏幕</li>
-                        <li>🤖 Android Chrome：点击右上角菜单 → 添加到主屏幕</li>
-                        <li>💻 其他浏览器：查找类似"安装应用"选项</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <h2 style="margin: 40px 0 20px; color: #333;">应用特色</h2>
-            
-            <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">💬</div>
-                    <h3 class="feature-title">智能对话建议</h3>
-                    <p class="feature-desc">8个恋爱阶段，数百种专业回复话术</p>
-                </div>
-                
-                <div class="feature">
-                    <div class="feature-icon">📱</div>
-                    <h3 class="feature-title">离线可用</h3>
-                    <p class="feature-desc">无网络时仍可正常使用</p>
-                </div>
-                
-                <div class="feature">
-                    <div class="feature-icon">🚀</div>
-                    <h3 class="feature-title">快速启动</h3>
-                    <p class="feature-desc">添加到桌面，一键快速启动</p>
-                </div>
-                
-                <div class="feature">
-                    <div class="feature-icon">🔒</div>
-                    <h3 class="feature-title">隐私安全</h3>
-                    <p class="feature-desc">所有数据仅保存在本地设备</p>
-                </div>
-            </div>
-        </div>
-        
-        <footer>
-            <p>© 2024 恋爱聊天助手 | 专业恋爱沟通指导工具</p>
-            <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.7;">如遇安装问题，请尝试使用其他浏览器</p>
-        </footer>
+  <div class="guide-container">
+    <h2 class="guide-title">微信中使用聊天应用指引</h2>
+    <div class="guide-step">
+      <h4>1. 打开方式</h4>
+      <p>在微信中点击右上角「...」，选择「在浏览器中打开」，推荐使用Chrome/Safari浏览器。</p>
     </div>
-    
-    <script>
-        // 自动设置当前网址
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentUrl = window.location.origin + window.location.pathname.replace('wechat-guide.html', '');
-            const appLink = document.getElementById('app-link');
-            
-            // 更新链接
-            appLink.href = currentUrl + 'index.html';
-            appLink.textContent = '立即打开恋爱聊天助手 (' + currentUrl + ')';
-            
-            // 生成二维码占位符
-            const qrPlaceholder = document.getElementById('qr-code-placeholder');
-            qrPlaceholder.innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <div style="font-size: 48px; margin-bottom: 10px;">📱</div>
-                    <div style="font-size: 14px; color: #666;">扫描二维码访问</div>
-                    <div style="font-size: 12px; color: #999; margin-top: 5px;">${currentUrl}</div>
-                </div>
-            `;
-            
-            console.log('当前网站地址:', currentUrl);
-        });
-        
-        // 微信检测 - 简化版
-        function isWeChatBrowser() {
-            const ua = navigator.userAgent.toLowerCase();
-            return ua.indexOf('micromessenger') !== -1;
-        }
-        
-        // 如果是微信访问引导页，显示提示
-        if (isWeChatBrowser() && window.location.pathname.endsWith('wechat-guide.html')) {
-            console.log('检测到微信浏览器访问引导页');
-        }
-    </script>
+    <div class="guide-step">
+      <h4>2. 添加到桌面</h4>
+      <p>浏览器中点击「添加到主屏幕」，即可将应用保存为桌面图标，离线也能使用。</p>
+    </div>
+    <div class="guide-step">
+      <h4>3. 注意事项</h4>
+      <p>微信内置浏览器可能限制部分PWA功能，建议使用手机自带浏览器体验完整功能。</p>
+    </div>
+    <a href="index.html" class="back-btn">返回聊天应用</a>
+  </div>
 </body>
 </html>
