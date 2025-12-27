@@ -27,7 +27,7 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    animation: fadeOut 0.5s ease-out 4s forwards;
+    /* 移除动画，由JavaScript控制 */
 }
 
 .couple-animation {
@@ -132,11 +132,22 @@ body {
     overflow: hidden;
     opacity: 0;
     transform: translateY(20px);
-    animation: slideUp 0.8s ease-out 4.5s forwards;
 }
 
 .hidden {
     display: none !important;
+}
+
+.show {
+    display: block !important;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+}
+
+.slide-up {
+    animation: slideUp 0.8s ease-out forwards;
 }
 
 .app-header {
@@ -474,6 +485,10 @@ body {
 }
 
 @keyframes fadeOut {
+    from {
+        opacity: 1;
+        visibility: visible;
+    }
     to {
         opacity: 0;
         visibility: hidden;
@@ -481,6 +496,10 @@ body {
 }
 
 @keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
     to {
         opacity: 1;
         transform: translateY(0);
