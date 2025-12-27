@@ -1,165 +1,46 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- PWA 相关 -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#667eea">
-    
-    <title>聊天话术助手</title>
-    
-    <!-- Manifest -->
-    <link rel="manifest" href="manifest.json">
-    
-    <!-- 图标 -->
-    <link rel="icon" href="icon.png">
-    <link rel="apple-touch-icon" href="icon.png">
-    
-    <!-- 样式 -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>简易聊天应用</title>
+  <!-- 移除过时的apple-mobile-web-app-capable，改用manifest配置 -->
+  <link rel="manifest" href="manifest.json">
+  <!-- 适配iOS PWA图标 -->
+  <link rel="apple-touch-icon" href="icon.png">
+  <meta name="apple-mobile-web-app-title" content="聊天应用">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 开场动画 -->
-    <div id="opening-animation" class="opening-animation">
-        <div class="loading-spinner"></div>
-        <div class="app-title">聊天话术助手</div>
-        <div class="app-subtitle">智能聊天话术建议工具</div>
+  <!-- 页面容器 -->
+  <div class="app-container">
+    <!-- 聊天窗口 -->
+    <div class="chat-window">
+      <!-- 消息列表 -->
+      <div class="message-list" id="messageList"></div>
+      <!-- 输入区域 -->
+      <div class="input-area">
+        <input type="text" id="messageInput" placeholder="输入消息...">
+        <button id="sendBtn">发送</button>
+      </div>
     </div>
+  </div>
 
-    <!-- 主应用界面 - 初始隐藏 -->
-    <div id="main-app" class="main-app" style="display: none;">
-        <!-- 阶段选择界面 -->
-        <div class="stages-list">
-            <div class="app-header">
-                <h1>💬 聊天话术助手</h1>
-                <p class="app-description">根据不同关系阶段提供智能回复建议</p>
-                
-                <!-- PWA 安装按钮 -->
-                <button id="pwa-install-button" class="pwa-install-button" style="display: none;">
-                    📱 安装应用
-                </button>
-            </div>
-
-            <div class="stages-grid">
-                <div class="stage-card" onclick="selectStage('icebreaking')">
-                    <div class="stage-icon">👋</div>
-                    <h3>破冰初识</h3>
-                    <p>初次相识，建立第一印象</p>
-                </div>
-
-                <div class="stage-card" onclick="selectStage('friendship')">
-                    <div class="stage-icon">😊</div>
-                    <h3>普通朋友</h3>
-                    <p>日常联系，建立舒适感</p>
-                </div>
-
-                <div class="stage-card" onclick="selectStage('attraction')">
-                    <div class="stage-icon">✨</div>
-                    <h3>吸引阶段</h3>
-                    <p>创造吸引，展示价值</p>
-                </div>
-
-                <div class="stage-card" onclick="selectStage('ambiguous')">
-                    <div class="stage-icon">😉</div>
-                    <h3>暧昧期</h3>
-                    <p>关系升温，微妙互动</p>
-                </div>
-
-                <div class="stage-card" onclick="selectStage('dating')">
-                    <div class="stage-icon">❤️</div>
-                    <h3>约会阶段</h3>
-                    <p>正式约会，推进关系</p>
-                </div>
-
-                <div class="stage-card" onclick="selectStage('intimacy')">
-                    <div class="stage-icon">💕</div>
-                    <h3>稳定亲密</h3>
-                    <p>深度连接，长期关系</p>
-                </div>
-
-                <div class="stage-card" onclick="selectStage('recovery')">
-                    <div class="stage-icon">🔄</div>
-                    <h3>挽回期</h3>
-                    <p>修复问题，重建信任</p>
-                </div>
-            </div>
-
-            <div class="instructions">
-                <h3>使用说明：</h3>
-                <ol>
-                    <li>选择当前的关系阶段</li>
-                    <li>输入对方的消息或关键词</li>
-                    <li>获取智能回复建议</li>
-                    <li>点击复制使用</li>
-                </ol>
-            </div>
-        </div>
-
-        <!-- 聊天界面 - 初始隐藏 -->
-        <div id="chat-interface" class="chat-interface" style="display: none;">
-            <div class="chat-header">
-                <button class="back-button" onclick="goBackToStages()">← 返回</button>
-                <h2 id="current-stage-title">选择阶段</h2>
-            </div>
-
-            <div class="chat-container">
-                <div class="input-section">
-                    <div class="input-group">
-                        <input 
-                            type="text" 
-                            id="message-input" 
-                            placeholder="输入对方的消息，如：在干嘛？吃了吗？"
-                            onkeypress="handleKeyPress(event)"
-                        >
-                        <button class="search-button" onclick="searchResponse()">
-                            🔍 获取回复
-                        </button>
-                    </div>
-                    
-                    <div class="quick-examples">
-                        <span>快速示例：</span>
-                        <button class="example-btn" onclick="fillExample('你好')">你好</button>
-                        <button class="example-btn" onclick="fillExample('在干嘛')">在干嘛</button>
-                        <button class="example-btn" onclick="fillExample('吃了吗')">吃了吗</button>
-                        <button class="example-btn" onclick="fillExample('周末有空吗')">周末有空</button>
-                    </div>
-                </div>
-
-                <div id="results-container" class="results-container"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast 提示 -->
-    <div id="copy-toast" class="copy-toast" style="display: none;">
-        ✅ 已复制到剪贴板
-    </div>
-
-    <!-- PWA 安装成功提示 -->
-    <div id="pwa-toast" class="pwa-toast" style="display: none;">
-        🎉 应用安装成功！
-    </div>
-
-    <!-- JavaScript -->
-    <script src="app.js"></script>
-    
-    <!-- Service Worker 注册 -->
-    <script>
-        // 只在生产环境注册 Service Worker
-        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(function(registration) {
-                        console.log('ServiceWorker 注册成功，作用域:', registration.scope);
-                    })
-                    .catch(function(error) {
-                        console.log('ServiceWorker 注册失败:', error);
-                    });
-            });
+  <!-- 核心逻辑引入 -->
+  <script src="app.js"></script>
+  <!-- Service Worker注册 -->
+  <script>
+    // 兼容本地开发（localhost）和HTTPS环境
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async () => {
+        try {
+          const registration = await navigator.serviceWorker.register('service-worker.js');
+          console.log('Service Worker注册成功:', registration.scope);
+        } catch (error) {
+          console.error('Service Worker注册失败:', error);
         }
-    </script>
+      });
+    }
+  </script>
 </body>
 </html>
