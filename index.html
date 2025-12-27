@@ -2,191 +2,164 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>恋爱聊天助手</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="icon.png">  <!-- ✅ 修改：icon.png -->
-    <!-- iOS Safari PWA支持 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- PWA 相关 -->
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" href="icon.png">  <!-- ✅ 修改：icon.png -->
+    <meta name="theme-color" content="#667eea">
+    
+    <title>聊天话术助手</title>
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- 图标 -->
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    
+    <!-- 样式 -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 开场动画容器 -->
-    <div id="opening-animation" class="opening-container">
-        <div class="couple-animation">
-            <div class="figure male"></div>
-            <div class="heart"></div>
-            <div class="figure female"></div>
-        </div>
-        <div class="app-title">
-            <h1>恋爱聊天助手</h1>
-            <p>智能对话 · 情感指导</p>
-        </div>
+    <!-- 开场动画 -->
+    <div id="opening-animation" class="opening-animation">
+        <div class="loading-spinner"></div>
+        <div class="app-title">聊天话术助手</div>
+        <div class="app-subtitle">智能聊天话术建议工具</div>
     </div>
 
-    <!-- 主界面（初始隐藏） -->
-    <div id="main-app" class="main-container hidden">
-        <header class="app-header">
-            <h1>💕 恋爱聊天助手</h1>
-            <p class="subtitle">选择当前关系阶段，获取专业回复建议</p>
-        </header>
+    <!-- 主应用界面 - 初始隐藏 -->
+    <div id="main-app" class="main-app" style="display: none;">
+        <!-- 阶段选择界面 -->
+        <div class="stages-list">
+            <div class="app-header">
+                <h1>💬 聊天话术助手</h1>
+                <p class="app-description">根据不同关系阶段提供智能回复建议</p>
+                
+                <!-- PWA 安装按钮 -->
+                <button id="pwa-install-button" class="pwa-install-button" style="display: none;">
+                    📱 安装应用
+                </button>
+            </div>
 
-        <main class="stages-container">
-            <!-- 8个阶段按钮 -->
-            <div class="stages-list">
-                <div class="stage-card" data-stage="icebreaking" onclick="selectStage('icebreaking')">
-                    <div class="stage-icon">❄️</div>
-                    <div class="stage-content">
-                        <h3>破冰初识</h3>
-                        <p>初次相识，建立联系</p>
-                    </div>
-                    <div class="stage-arrow">→</div>
+            <div class="stages-grid">
+                <div class="stage-card" onclick="selectStage('icebreaking')">
+                    <div class="stage-icon">👋</div>
+                    <h3>破冰初识</h3>
+                    <p>初次相识，建立第一印象</p>
                 </div>
 
-                <div class="stage-card" data-stage="friendship" onclick="selectStage('friendship')">
-                    <div class="stage-icon">👥</div>
-                    <div class="stage-content">
-                        <h3>普通朋友</h3>
-                        <p>保持联系，增进了解</p>
-                    </div>
-                    <div class="stage-arrow">→</div>
-                </div>
-
-                <div class="stage-card" data-stage="attraction" onclick="selectStage('attraction')">
-                    <div class="stage-icon">💘</div>
-                    <div class="stage-content">
-                        <h3>吸引阶段</h3>
-                        <p>创造吸引，展示价值</p>
-                    </div>
-                    <div class="stage-arrow">→</div>
-                </div>
-
-                <div class="stage-card" data-stage="ambiguous" onclick="selectStage('ambiguous')">
+                <div class="stage-card" onclick="selectStage('friendship')">
                     <div class="stage-icon">😊</div>
-                    <div class="stage-content">
-                        <h3>暧昧期</h3>
-                        <p>微妙关系，升温感情</p>
-                    </div>
-                    <div class="stage-arrow">→</div>
+                    <h3>普通朋友</h3>
+                    <p>日常联系，建立舒适感</p>
                 </div>
 
-                <div class="stage-card" data-stage="dating" onclick="selectStage('dating')">
-                    <div class="stage-icon">🎯</div>
-                    <div class="stage-content">
-                        <h3>约会阶段</h3>
-                        <p>正式约会，推进关系</p>
-                    </div>
-                    <div class="stage-arrow">→</div>
+                <div class="stage-card" onclick="selectStage('attraction')">
+                    <div class="stage-icon">✨</div>
+                    <h3>吸引阶段</h3>
+                    <p>创造吸引，展示价值</p>
                 </div>
 
-                <div class="stage-card" data-stage="intimacy" onclick="selectStage('intimacy')">
-                    <div class="stage-icon">💑</div>
-                    <div class="stage-content">
-                        <h3>稳定亲密</h3>
-                        <p>确立关系，深度连接</p>
-                    </div>
-                    <div class="stage-arrow">→</div>
+                <div class="stage-card" onclick="selectStage('ambiguous')">
+                    <div class="stage-icon">😉</div>
+                    <h3>暧昧期</h3>
+                    <p>关系升温，微妙互动</p>
                 </div>
 
-                <div class="stage-card" data-stage="recovery" onclick="selectStage('recovery')">
+                <div class="stage-card" onclick="selectStage('dating')">
+                    <div class="stage-icon">❤️</div>
+                    <h3>约会阶段</h3>
+                    <p>正式约会，推进关系</p>
+                </div>
+
+                <div class="stage-card" onclick="selectStage('intimacy')">
+                    <div class="stage-icon">💕</div>
+                    <h3>稳定亲密</h3>
+                    <p>深度连接，长期关系</p>
+                </div>
+
+                <div class="stage-card" onclick="selectStage('recovery')">
                     <div class="stage-icon">🔄</div>
-                    <div class="stage-content">
-                        <h3>挽回期</h3>
-                        <p>修复关系，重建信任</p>
-                    </div>
-                    <div class="stage-arrow">→</div>
+                    <h3>挽回期</h3>
+                    <p>修复问题，重建信任</p>
                 </div>
             </div>
 
-            <!-- 聊天界面（初始隐藏） -->
-            <div id="chat-interface" class="chat-container hidden">
-                <div class="chat-header">
-                    <button onclick="goBackToStages()" class="back-btn">← 返回</button>
-                    <h2 id="current-stage-title">破冰初识</h2>
-                </div>
+            <div class="instructions">
+                <h3>使用说明：</h3>
+                <ol>
+                    <li>选择当前的关系阶段</li>
+                    <li>输入对方的消息或关键词</li>
+                    <li>获取智能回复建议</li>
+                    <li>点击复制使用</li>
+                </ol>
+            </div>
+        </div>
 
-                <div class="search-section">
-                    <input type="text" id="message-input" 
-                           placeholder="输入女生的话，搜索最佳回复..."
-                           onkeypress="handleKeyPress(event)">
-                    <button onclick="searchResponse()" class="search-btn">搜索</button>
-                </div>
+        <!-- 聊天界面 - 初始隐藏 -->
+        <div id="chat-interface" class="chat-interface" style="display: none;">
+            <div class="chat-header">
+                <button class="back-button" onclick="goBackToStages()">← 返回</button>
+                <h2 id="current-stage-title">选择阶段</h2>
+            </div>
 
-                <div id="results-container" class="results-container">
-                    <!-- 搜索结果将动态显示在这里 -->
-                </div>
-
-                <div class="quick-examples">
-                    <p>试试输入：</p>
-                    <div class="example-chips">
-                        <span onclick="fillExample('你好')">你好</span>
-                        <span onclick="fillExample('在干嘛')">在干嘛</span>
-                        <span onclick="fillExample('吃饭了吗')">吃饭了吗</span>
-                        <span onclick="fillExample('周末有空吗')">周末有空吗</span>
-                        <span onclick="fillExample('晚安')">晚安</span>
+            <div class="chat-container">
+                <div class="input-section">
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="message-input" 
+                            placeholder="输入对方的消息，如：在干嘛？吃了吗？"
+                            onkeypress="handleKeyPress(event)"
+                        >
+                        <button class="search-button" onclick="searchResponse()">
+                            🔍 获取回复
+                        </button>
+                    </div>
+                    
+                    <div class="quick-examples">
+                        <span>快速示例：</span>
+                        <button class="example-btn" onclick="fillExample('你好')">你好</button>
+                        <button class="example-btn" onclick="fillExample('在干嘛')">在干嘛</button>
+                        <button class="example-btn" onclick="fillExample('吃了吗')">吃了吗</button>
+                        <button class="example-btn" onclick="fillExample('周末有空吗')">周末有空</button>
                     </div>
                 </div>
-            </div>
-        </main>
 
-        <footer class="app-footer">
-            <p>💡 提示：点击阶段进入，输入对话内容获取建议</p>
-        </footer>
+                <div id="results-container" class="results-container"></div>
+            </div>
+        </div>
     </div>
 
-    <!-- 复制成功提示 -->
-    <div id="copy-toast" class="copy-toast">✓ 已复制到剪贴板</div>
+    <!-- Toast 提示 -->
+    <div id="copy-toast" class="copy-toast" style="display: none;">
+        ✅ 已复制到剪贴板
+    </div>
 
+    <!-- PWA 安装成功提示 -->
+    <div id="pwa-toast" class="pwa-toast" style="display: none;">
+        🎉 应用安装成功！
+    </div>
+
+    <!-- JavaScript -->
     <script src="app.js"></script>
-    <!-- PWA Service Worker注册 -->
+    
+    <!-- Service Worker 注册 -->
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
+        // 只在生产环境注册 Service Worker
+        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
+            window.addEventListener('load', function() {
                 navigator.serviceWorker.register('service-worker.js')
-                    .then(registration => {
-                        console.log('ServiceWorker 注册成功:', registration.scope);
+                    .then(function(registration) {
+                        console.log('ServiceWorker 注册成功，作用域:', registration.scope);
                     })
-                    .catch(error => {
+                    .catch(function(error) {
                         console.log('ServiceWorker 注册失败:', error);
                     });
             });
         }
-
-        // 安装提示
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            
-            deferredPrompt = e;
-            
-            // 5秒后显示安装提示
-            setTimeout(() => {
-                showInstallPrompt();
-            }, 5000);
-        });
-
-        function showInstallPrompt() {
-            if (deferredPrompt && !localStorage.getItem('installDismissed')) {
-                const installBtn = document.createElement('button');
-                installBtn.className = 'install-btn';
-                installBtn.innerHTML = '📱 添加到桌面';
-                installBtn.onclick = () => {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then(() => {
-                        installBtn.remove();
-                        localStorage.setItem('installDismissed', 'true');
-                    });
-                };
-                
-                installBtn.onmouseenter = () => {
-                    setTimeout(() => installBtn.remove(), 3000);
-                };
-                
-                document.body.appendChild(installBtn);
-            }
-        }
     </script>
 </body>
 </html>
-
