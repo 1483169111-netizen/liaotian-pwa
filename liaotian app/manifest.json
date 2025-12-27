@@ -1,0 +1,55 @@
+{
+  "name": "恋爱聊天助手",
+  "short_name": "恋爱助手",
+  "description": "专业的恋爱聊天指导助手，提供各阶段对话建议",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "orientation": "portrait",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "social", "productivity"],
+  "shortcuts": [
+    {
+      "name": "快速开始",
+      "short_name": "开始",
+      "description": "开始使用恋爱聊天助手",
+      "url": "./index.html"
+    },
+    {
+      "name": "破冰初识",
+      "short_name": "破冰",
+      "description": "初次相识对话建议",
+      "url": "./index.html?stage=icebreaking"
+    },
+    {
+      "name": "暧昧期",
+      "short_name": "暧昧",
+      "description": "暧昧阶段对话建议",
+      "url": "./index.html?stage=ambiguous"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./screenshot1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "恋爱聊天助手主界面"
+    }
+  ]
+}
